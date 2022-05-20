@@ -16,30 +16,6 @@
 
 #define hello std::cout << "valkommen till sten, sax, pasar" << std::endl;
 
-struct metrics
-{
-    uint32_t usage;
-    uint32_t freed;
-
-    uint32_t currentusage() {return usage - freed;}
-};
-static metrics s_metrics;
-void* operator new(size_t size)
-{
-    s_metrics.usage += size;
-
-    return malloc(size);
-}
-void operator delete(void* memory, size_t size)
-{
-    s_metrics.freed += size;
-
-    free(memory);
-}
-static void memoryusage()
-{
-    std::cout << "memory usage is " << s_metrics.currentusage() << " bytes" << std::endl;
-}
 class roc1
 {
     std::array<std::string, 3> arr1 = {"1. sten", "2. pasar", "3. sax"};
@@ -68,17 +44,19 @@ public:
 };
 void single::singlerock()
 {
+    system("cls");
+    std::cout << "singleplayer" << std::endl;
     std::cout << "vad heter du : ";
     std::cin >> player1;
-    memoryusage();
     do
     {
+        system("cls");
         std::cout << "valkomen " << player1 << std::endl;
         r.stuff();
         do
         {
             std::cout << "vilken valjer du? tryck nummer : \n";
-            std::cin >> youdice;s
+            std::cin >> youdice;
             if(youdice <= 0 || youdice > 3)
             {
                 std::cout << "nummer ar for hog eller lag" << std::endl;
@@ -134,8 +112,97 @@ void single::singlerock()
 }
 class mulit
 {
-
+    std::string player1, player2;
+    int youdice1, youdice2;
+    int pos1 = 0;
+    int pos2 = 0;
+    char choice;
+    roc1 r;
+public:
+    void mulitrock();
 };
+void mulit::mulitrock()
+{
+    system("cls");
+    std::cout << "mulitplayer" << std::endl;
+    std::cout << "forsta spelare namn : ";
+    std::cin >> player1;
+    std::cout << "andra spelare name : ";
+    std::cin >> player2;
+    do
+    {
+
+        system("cls");
+        r.stuff();
+        std::cout << player1 << " ska valja : ";
+        std::cin >> youdice1;
+
+        system("cls");
+        r.stuff();
+        std::cout << player2 << " ska valja : ";
+        std::cin >> youdice2;
+
+        system("cls");
+        if(youdice1 == youdice2)
+        {
+            std::cout << "ingen vann" << std::endl;
+        }
+        else if(youdice1 == 1 && youdice2 == 3)
+        {
+            std::cout << player1 << " vann" << std::endl;
+            pos1++;
+        }
+        else if(youdice1 == 2 && youdice2 == 1)
+        {
+            std::cout << player1 << " vann" << std::endl;
+            pos1++;
+        }
+        else if(youdice1 == 3 && youdice2 == 2)
+        {
+            std::cout << player1 << " vann" << std::endl;
+            pos1++;
+        }
+        else if(youdice1 == 1 && youdice2 == 2)
+        {
+            std::cout << player2 << " vann" << std::endl;
+            pos2++;
+        }
+        else if(youdice1 == 2 && youdice2 == 3)
+        {
+            std::cout << player2 << " vann" << std::endl;
+            pos2++;
+        }
+        else if(youdice1 == 3 && youdice2 == 1)
+        {
+            std::cout << player2 << " vann" << std::endl;
+            pos2++;
+        }
+        else
+        {
+            std::cout << "en tryck fel nummer" << std::endl;
+            break;
+        }
+        std::cout << player1 << " poang ar " << pos1 << std::endl;
+        std::cout << player2 << " ponag ar " << pos2 << std::endl;
+        if(pos1 >= 3)
+        {
+            system("cls");
+            std::cout << player1 << " hade " << pos1 << " och vann spelat" << std::endl;
+        }
+        else if(pos2 >= 3)
+        {
+            system("cls");
+            std::cout << player2 << " hade " << pos2 << " och vann spelat" << std::endl;
+            break;
+        }
+        std::cout << "vill ni spela igen(j/n)";
+        std::cin >> choice;
+        if(choice == 'N' || choice == 'n')
+        {
+            break;
+        }
+    }while(choice == 'J' || choice == 'j');
+}
 int main()
 {
     single s;
@@ -154,7 +221,7 @@ int main()
         }
         else if(level == 2)
         {
-
+            m.mulitrock();
         }
         else
         {
